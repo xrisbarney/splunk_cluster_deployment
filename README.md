@@ -9,6 +9,8 @@
 ### based on https://github.com/cuddlesec/ansible-splunk-simple
 ### also based on Bash-driven setup:   https://github.com/aplura/Vagrant_Splunk_Cluster
 
+Ansible-based Splunk Cluster creator
+
 Tested on Centos 7 x64
 
 These playbooks create 2 Clusters (SH and Indexer) in addition to creating a Splunk Indexer Master and a Splunk SearchHead Deployer. 
@@ -28,4 +30,4 @@ The end result is this:
     ansible-playbook -i hosts play_ludicrous_speed.yaml -v
     ```
 
-Login to Master <masterIP>:8000 and click Settings > Indexer clustering to see the clusters at work.
+Login to Master < masterIP >:8000 and click Settings > Indexer clustering to see the clusters at work.
