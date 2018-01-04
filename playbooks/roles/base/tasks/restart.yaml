@@ -1,0 +1,14 @@
+- name: /opt/splunk permissions
+  file: path=/opt/splunk state=directory mode=0755 owner=splunk group=splunk recurse=yes
+
+- name: check if splunk is running
+  shell: netstat -tulpan | grep '8089\|8000\|8191' | wc -l
+  register: splunksvc
+
+- name: cleanup zombie procs
+  shell: ps -ef | grep 'splunkd\|mongod' | grep -v grep | awk '{print $2}' | xargs kill -9
+  when: splunksvc.stdout != "0"
+  ignore_errors: true
+
+- name: restart Splunk service
+  service: name=splunk state=restarted

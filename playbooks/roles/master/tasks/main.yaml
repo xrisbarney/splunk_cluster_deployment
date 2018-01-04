@@ -1,0 +1,29 @@
+---
+# configure Splunk Master
+# Master Node for Indexer Cluster, License Master
+
+  # see: http://docs.splunk.com/Documentation/Splunk/7.0.1/Indexer/Managecommonconfigurations
+- name: create Master App for config deployment to IDX peers  
+  file: path=/opt/splunk/etc/master-apps state=directory 
+
+- name: configure as IDX Master
+  shell: splunk edit cluster-config -mode master -secret {{ cluster['secret'] }} -cluster_label {{ cluster['indexer']['label'] }} -auth admin:{{ admin_pw }}
+
+- name: install HA Proxy
+  yum: name=haproxy state=present
+
+- name: configure HA proxy default
+  template:
+    src: "haproxy.j2"
+    dest: /etc/default/haproxy
+
+- name: configure HA proxy
+  template:
+    src: haproxy.cfg.j2
+    dest: /etc/haproxy/haproxy.cfg
+
+- name: restart HA proxy service
+  service: name=haproxy state=restarted
+
+- name: restart Splunk
+  include: "{{ playbook_dir }}/roles/base/tasks/restart.yaml"

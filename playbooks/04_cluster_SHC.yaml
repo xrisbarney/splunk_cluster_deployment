@@ -1,0 +1,10 @@
+# INSTALLS SPLUNK Search Head Cluster
+
+- hosts: "search_head"  
+  become_user: root
+  become: true
+  gather_facts: true
+  roles:
+    - base
+    - cluster_SHC
+

@@ -1,0 +1,31 @@
+---
+# Install Splunk Base
+
+
+- name: add splunk group
+  group: name=splunk state=present gid=6002
+
+- name: add splunk user
+  user: name=splunk comment="Splunk service user" shell=/usr/sbin/nologin groups=splunk createhome=no uid=6002
+
+- name: make /opt writetable by splunk
+  file: path=/opt mode=777
+
+- name: checking if splunk is installed
+  stat: path=/opt/splunk
+  register: splunk_path
+
+- name: is splunk installed? 
+  debug: msg='splunk is already installed under /opt/splunk'
+  when: splunk_path.stat.exists
+
+- name: get splunk binary
+  get_url:
+    url: "{{ splunk['download_url'] }}"
+    dest: "/tmp/{{ splunk['binary'] }}"
+    checksum: "{{ splunk['checksum'] }}"
+    mode: 0440
+
+- name: install splunk RPM
+  yum: name="/tmp/{{ splunk['binary'] }}" state=present
+

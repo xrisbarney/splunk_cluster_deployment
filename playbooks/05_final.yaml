@@ -1,0 +1,18 @@
+# TEST
+
+- hosts: master
+  become_user: root
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Add SearchHeads to IDX Master   
+      command: "/usr/bin/splunk add search-server -host {{ item.value }}:8089  -auth admin:{{ admin_pw }} -remoteUsername admin -remotePassword {{ admin_pw }}"
+      with_dict: "{{ cluster.search_head.members }}"
+      ignore_errors: false
+
+  # RESTART MASTER splunk
+  
+     
+
+

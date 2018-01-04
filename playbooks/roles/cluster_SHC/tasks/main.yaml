@@ -1,0 +1,35 @@
+# Configure Search Head Cluster
+
+- name: SH Cluster
+  debug: msg="Configuring Search Head Cluster...."
+
+- name: /opt/splunk permissions
+  file: path=/opt/splunk state=directory mode=0755 owner=splunk group=splunk recurse=yes
+
+- name: start Splunk 
+  service: name=splunk state=started
+
+- name: search head init
+  command: splunk init shcluster-config -auth admin:{{ admin_pw }} \
+          -mgmt_uri "https://{{ ansible_default_ipv4.address }}:8089" \
+          -replication_port 8090 \
+          -conf_deploy_fetch_url https://{{ cluster['search_head']['deployer']['ip']  }}:8089 \
+          -secret {{ cluster['secret'] }} \
+          -shcluster_label {{ cluster['search_head']['label'] }}
+
+- name: stop Splunk 
+  service: name=splunk state=stopped
+
+- name: restart Splunk
+  include: "{{ playbook_dir }}/roles/base/tasks/restart.yaml"
+
+- name: Configure Captain 
+  command: "splunk bootstrap shcluster-captain -servers_list {{ cluster.search_head.members.values() | map('regex_replace', '(.*)', 'https://\\1:8089') | join(',') }} -auth admin:{{ admin_pw }}"
+  when: ansible_hostname == "{{ cluster['search_head']['captain'] }}"
+
+- name: Integrate with IDX cluster
+  command: "splunk edit cluster-config -mode searchhead -master_uri https://{{ cluster['indexer']['master']['ip'] }}:8089 -auth admin:{{ admin_pw }} -secret {{ cluster['secret'] }}"
+
+- name: restart Splunk
+  include: "{{ playbook_dir }}/roles/base/tasks/restart.yaml"
+

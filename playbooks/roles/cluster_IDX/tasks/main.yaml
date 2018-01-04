@@ -1,0 +1,13 @@
+# Configure Indexer Cluster
+
+- name: IDX Cluster
+  debug: msg="Configuring Indexer Cluster...."
+
+- name: Enable a IDX peer node as a cluster slave
+  shell: splunk edit cluster-config -mode slave -master_uri https://{{ cluster['indexer']['master']['ip'] }}:8089 \
+        -replication_port 9887 -secret {{ cluster['secret'] }} -cluster_label {{ cluster['indexer']['label'] }} \
+        -auth admin:{{ admin_pw }}
+
+- name: restart Splunk
+  include: "{{ playbook_dir }}/roles/base/tasks/restart.yaml"
+  

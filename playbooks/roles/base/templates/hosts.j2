@@ -1,0 +1,14 @@
+127.0.0.1       {{ ansible_fqdn }}     {{ ansible_hostname }}
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+{% for member in cluster['search_head']['members'] %}
+{{ cluster['search_head']['members'][member] }}   {{ member }}
+{% endfor %}
+
+{% for member in cluster['indexer']['members'] %}
+{{ cluster['indexer']['members'][member] }}   {{ member }}
+{% endfor %}
+
+{{ cluster['indexer']['master']['ip'] }}  {{ cluster['indexer']['master']['hostname'] }}
+{{ cluster['search_head']['deployer']['ip'] }}  {{ cluster['search_head']['deployer']['hostname'] }} 

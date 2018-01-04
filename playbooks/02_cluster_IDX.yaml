@@ -1,0 +1,10 @@
+
+# INSTALLS SPLUNK Indexer Cluster
+
+- hosts: "indexer"  
+  become_user: root
+  become: true
+  gather_facts: true
+  roles:
+    - base
+    - cluster_IDX

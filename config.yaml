@@ -1,0 +1,47 @@
+---
+# Splunk SpaceBalls 
+
+# Base Config
+splunk:
+  version: 7.0.1
+  binary: splunk-7.0.1-2b5b15c4ee89-linux-2.6-x86_64.rpm
+  download_url: "https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.0.1&product=splunk&filename=splunk-7.0.1-2b5b15c4ee89-linux-2.6-x86_64.rpm&wget=true"
+  checksum: md5:89e80e1822be6c02c9f6754215bfa1e8
+  web:
+    enableSplunkWebSSL: true
+    httpport: 8000
+  
+# Web UI admin pw
+admin_pw: darkhelmet
+
+# Cluster Config
+cluster:
+  secret: SpaceWinnebago  # secret key
+  app_name: spaceballs    # adds a custom Splunk App for Cluster config
+  replication_factor: 3   # 3 is default
+  search_factor: 2        # 2 is default
+
+  # SH
+  search_head:
+    label: shcluster
+    captain: mrxsplunksh01
+    deployer:
+      ip: 10.185.20.158
+      hostname: mrxsplunkdep
+    members:
+      mrxsplunksh01: 10.185.20.156
+      mrxsplunksh02: 10.185.20.160 
+      mrxsplunksh03: 10.185.20.161
+  
+  # IDX
+  indexer:
+    label: idxcluster
+    master:
+      ip: 10.185.20.170
+      hostname: mrxsplunkmas
+    members:
+      mrxsplunkidx01: 10.185.20.167
+      mrxsplunkidx02: 10.185.20.163
+      mrxsplunkidx03: 10.185.20.169
+  
+

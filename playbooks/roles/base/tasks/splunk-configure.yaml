@@ -1,0 +1,51 @@
+# Configure Base Splunk install
+
+- name: add systemd startup
+  template:
+    src: "splunk.service.j2"
+    dest: /etc/systemd/system/splunk.service
+
+- name: create symlink to binary
+  file: src="/opt/splunk/bin/splunk" dest="/usr/bin/splunk" state=link
+
+- name: update /etc/hosts (disable this if using DNS!!)
+  template:
+    src: "hosts.j2"
+    dest: /etc/hosts
+
+- name: add ui_login
+  file: path=/opt/splunk/etc/.ui_login state=touch mode=0600  
+
+- name: /opt/splunk permissions
+  file: path=/opt/splunk state=directory mode=0755 owner=splunk group=splunk recurse=yes
+
+- name: /opt/splunk/var permissions
+  file: path=/opt/splunk/var state=directory mode=0750 owner=splunk group=users recurse=yes
+
+- name: check if splunk is running
+  shell: netstat -tulpan | grep '8089\|8000\|8191' | wc -l
+  register: splunksvc
+
+- name: cleanup zombie procs
+  shell: ps -ef | grep 'splunkd\|mongod' | grep -v grep | awk '{print $2}' | xargs kill -9
+  when: splunksvc.stdout != "0"
+  ignore_errors: true
+
+- name: accept license and start splunk
+  shell: /opt/splunk/bin/splunk start --accept-license
+  when: splunksvc.stdout == "0"
+
+- name: change default PW
+  shell: /opt/splunk/bin/splunk edit user admin -password "{{ admin_pw }}" -roles admin -auth admin:changeme
+  ignore_errors: true
+
+- name: restart Splunk
+  include: "{{ playbook_dir }}/roles/base/tasks/restart.yaml"
+
+
+
+
+
+
+
+

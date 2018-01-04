@@ -1,0 +1,22 @@
+---
+# configure Splunk Deployer (Search Head app deployer)
+
+- name: configure shcluster
+  blockinfile: 
+    path: /opt/splunk/etc/system/local/server.conf
+    insertafter: EOF
+    marker: ' '
+    block: |
+      [license]
+      master_uri = https://{{ cluster['indexer']['master']['ip'] }}:8089
+          
+      [shclustering]
+      pass4SymmKey = {{ cluster['secret'] }}
+      shcluster_label = {{ cluster['search_head']['label'] }}
+
+- name: create Deployment directory for Apps 
+  file: path=/opt/splunk/etc/shcluster/apps state=directory mode=0755 owner=splunk group=splunk recurse=yes
+
+- name: restart Splunk
+  include: "{{ playbook_dir }}/roles/base/tasks/restart.yaml"
+

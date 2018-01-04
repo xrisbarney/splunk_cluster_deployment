@@ -1,0 +1,5 @@
+---
+# install Splunk Base
+  
+- include: splunk-install.yaml
+- include: splunk-configure.yaml

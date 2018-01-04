@@ -1,0 +1,14 @@
+[general]
+pass4SymmKey = {{ cluster['secret'] }}
+
+[replication_port://9887]
+
+[clustering]
+mode = slave
+pass4SymmKey = {{ cluster['secret'] }}
+master_uri = https://{{ cluster['indexer']['master']['ip'] }}:8089
+cluster_label = {{ cluster['indexer']['label'] }}
+
+[license]
+master_uri = https://{{ cluster['indexer']['master']['ip'] }}:8089
+

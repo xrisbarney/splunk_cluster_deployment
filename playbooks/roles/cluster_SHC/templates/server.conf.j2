@@ -1,0 +1,24 @@
+[general]
+pass4SymmKey = {{ cluster['secret'] }}
+serverName = {{ ansible_hostname }}
+
+[license]
+master_uri = https://{{ cluster['indexer']['master']['ip'] }}:8089
+
+[shclustering]
+conf_deploy_fetch_url = https://{{ cluster['search_head']['deployer']['ip'] }}:8089
+pass4SymmKey = {{ cluster['secret'] }}
+shcluster_label = {{ cluster['search_head']['label'] }}
+mgmt_uri = https://{{ ansible_hostname }}
+disabled = 0
+
+[clustering]
+mode = searchhead
+pass4SymmKey = {{ cluster['secret'] }}
+master_uri = https://{{ cluster['indexer']['master']['ip'] }}:8089
+cluster_label = {{ cluster['indexer']['label'] }}
+
+[diskUsage]
+minFreeSpace = 1000
+
+[replication_port://9997]

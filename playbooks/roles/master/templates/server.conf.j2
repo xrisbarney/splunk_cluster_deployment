@@ -1,0 +1,12 @@
+[general]
+pass4SymmKey = {{ cluster['secret'] }}
+
+[license]
+master_uri = https://{{ cluster['indexer']['master']['ip'] }}:8089
+
+[clustering]
+mode = master
+replication_factor = {{ cluster['replication_factor'] }}
+search_factor = {{ cluster['search_factor'] }}
+pass4SymmKey = {{ cluster['secret'] }}
+cluster_label = {{ cluster['indexer']['label'] }}

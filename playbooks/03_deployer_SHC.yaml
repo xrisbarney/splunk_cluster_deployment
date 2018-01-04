@@ -1,0 +1,10 @@
+# INSTALLS SPLUNK Search Head Deployer
+
+- hosts: "deployer"  
+  become_user: root
+  become: true
+  gather_facts: true
+  roles:
+    - base
+    - deployer
+

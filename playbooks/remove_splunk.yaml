@@ -1,0 +1,30 @@
+# REMOVE SPLUNK
+
+- hosts: all
+  become_user: root
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: uninstall
+      block:
+        - service: name=splunk state=stopped
+          ignore_errors: "True"
+
+        - yum: name=splunk state=removed
+          ignore_errors: "True"
+        
+        - file: path=/opt/splunk state=absent
+
+        - service: name=haproxy state=stopped
+          ignore_errors: "True"
+          when: ansible_hostname == "mrxsplunkdep"
+
+        - yum: name=haproxy state=removed
+          ignore_errors: "True"
+          when: ansible_hostname == "mrxsplunkdep"
+        
+        - command: /usr/sbin/reboot
+
+
+

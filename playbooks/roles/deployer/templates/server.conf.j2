@@ -1,0 +1,13 @@
+[general]
+pass4SymmKey = {{ cluster['secret'] }}
+
+[license]
+master_uri = https://{{ cluster['indexer']['master']['ip'] }}:8089
+
+[shclustering]
+pass4SymmKey = {{ cluster['secret'] }}
+shcluster_label = {{ cluster['search_head']['label'] }}
+#conf_deploy_fetch_url = https://{{ cluster['search_head']['deployer']['ip'] }}:8089
+#replication_factor = {{ cluster['replication_factor'] }}
+#mgmt_uri = https://{{ ansible_hostname }}
+#disabled = 0
