@@ -1,13 +1,18 @@
 # Configure Indexer Cluster
 
-- name: IDX Cluster
-  debug: msg="Configuring Indexer Cluster...."
+- name: add license master
+  blockinfile: 
+    path: /opt/splunk/etc/system/local/server.conf
+    insertafter: EOF
+    marker: ' '
+    block: |
+      [license]
+      master_uri = https://{{ groups['master'][0] }}:8089
 
 - name: Enable a IDX peer node as a cluster slave
-  shell: splunk edit cluster-config -mode slave -master_uri https://{{ cluster['indexer']['master']['ip'] }}:8089 \
-        -replication_port 9887 -secret {{ cluster['secret'] }} -cluster_label {{ cluster['indexer']['label'] }} \
+  shell: splunk edit cluster-config -mode slave -master_uri https://{{ groups['master'][0] }}:8089 \
+        -replication_port 9887 -secret {{ cluster['secret'] }} -cluster_label {{ cluster['label']['idx'] }} \
         -auth admin:{{ admin_pw }}
 
 - name: restart Splunk
   include: "{{ playbook_dir }}/roles/base/tasks/restart.yaml"
-  

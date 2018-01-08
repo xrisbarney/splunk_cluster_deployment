@@ -1,10 +1,11 @@
+---
 - hosts: all
   tasks:
     - name: include vars
       include_vars: "config.yaml"
 
+
 # Start the Engines!
-#- include: playbooks/test.yaml
 - include: playbooks/01_master_IDX.yaml
 - include: playbooks/02_cluster_IDX.yaml
 - include: playbooks/03_deployer_SHC.yaml

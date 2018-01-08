@@ -8,11 +8,11 @@
     marker: ' '
     block: |
       [license]
-      master_uri = https://{{ cluster['indexer']['master']['ip'] }}:8089
+      master_uri = https://{{ groups['master'][0] }}:8089
           
       [shclustering]
       pass4SymmKey = {{ cluster['secret'] }}
-      shcluster_label = {{ cluster['search_head']['label'] }}
+      shcluster_label = {{ cluster['label']['shc'] }}
 
 - name: create Deployment directory for Apps 
   file: path=/opt/splunk/etc/shcluster/apps state=directory mode=0755 owner=splunk group=splunk recurse=yes

@@ -7,12 +7,9 @@
 
   tasks:
     - name: Add SearchHeads to IDX Master   
-      command: "/usr/bin/splunk add search-server -host {{ item.value }}:8089  -auth admin:{{ admin_pw }} -remoteUsername admin -remotePassword {{ admin_pw }}"
-      with_dict: "{{ cluster.search_head.members }}"
+      command: "/usr/bin/splunk add search-server https://{{ item }}:8089  -auth admin:{{ admin_pw }} -remoteUsername admin -remotePassword {{ admin_pw }}"
+      with_items: "{{ groups['search_head'] }}"
       ignore_errors: false
 
-  # RESTART MASTER splunk
-  
-     
-
-
+    - name: restart Splunk
+      include: "{{ playbook_dir }}/roles/base/tasks/restart.yaml"

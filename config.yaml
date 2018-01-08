@@ -1,5 +1,5 @@
 ---
-# Splunk SpaceBalls 
+# Splunk Global Vars
 
 # Base Config
 splunk:
@@ -10,38 +10,16 @@ splunk:
   web:
     enableSplunkWebSSL: true
     httpport: 8000
-  
+
 # Web UI admin pw
 admin_pw: darkhelmet
 
 # Cluster Config
 cluster:
   secret: SpaceWinnebago  # secret key
-  app_name: spaceballs    # adds a custom Splunk App for Cluster config
+  label: 
+    idx: idx_cluster    # cluster label
+    shc: sh_cluster
   replication_factor: 3   # 3 is default
   search_factor: 2        # 2 is default
-
-  # SH
-  search_head:
-    label: shcluster
-    captain: mrxsplunksh01
-    deployer:
-      ip: 10.185.20.158
-      hostname: mrxsplunkdep
-    members:
-      mrxsplunksh01: 10.185.20.156
-      mrxsplunksh02: 10.185.20.160 
-      mrxsplunksh03: 10.185.20.161
-  
-  # IDX
-  indexer:
-    label: idxcluster
-    master:
-      ip: 10.185.20.170
-      hostname: mrxsplunkmas
-    members:
-      mrxsplunkidx01: 10.185.20.167
-      mrxsplunkidx02: 10.185.20.163
-      mrxsplunkidx03: 10.185.20.169
-  
 

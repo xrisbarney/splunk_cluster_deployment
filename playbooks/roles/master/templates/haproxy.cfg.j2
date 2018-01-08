@@ -19,9 +19,9 @@ backend webservers
     option httpchk
     option forwardfor
     option http-server-close
-    server shc1 10.10.50.140:8000 maxconn 32 check ssl verify none
-    server shc2 10.10.50.150:8000 maxconn 32 check ssl verify none
-    server shc3 10.10.50.160:8000 maxconn 32 check ssl verify none
+    server mrxsplunksh01.vagrant.local 10.185.20.156:8000 maxconn 32 check ssl verify none
+    server mrxsplunksh02.vagrant.local 10.10.50.160:8000 maxconn 32 check ssl verify none
+    server mrxsplunksh03.vagrant.local 10.10.50.161:8000 maxconn 32 check ssl verify none
 
 listen admin
     bind *:8080

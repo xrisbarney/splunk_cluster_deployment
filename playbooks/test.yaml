@@ -4,23 +4,43 @@
   become_user: root
   become: true
   gather_facts: true
+  vars:
+    master: "{{ groups['master'][0] }}"
+    deployer: "{{ groups['deployer'][0] }}"
 
+
+- hosts: deployer
   tasks:
-    - name: TEST
-      debug: msg="THIS IS A TEST"
+    # - name: Add SearchHeads to IDX Master   
+    #   command: "echo host ['ansible_ssh_host']{{ item }}:8089"
+    #   with_items: "{{ groups['search_head'] }}"
+    #   ignore_errors: false
 
-    - name: configure shcluster
-      blockinfile: 
-        path: /opt/splunk/etc/system/local/server.conf
-        insertafter: EOF
-        marker: ' '
-        block: |
-          [license]
-          master_uri = https://{{ cluster['indexer']['master']['ip'] }}:8089
-          
-          [shclustering]
-          pass4SymmKey = {{ cluster['secret'] }}
-          shcluster_label = {{ cluster['search_head']['label'] }}
+    - name: Configure Captain 
+      shell: echo "{{ ansible_fqdn }} --- {{ groups['search_head'][0] }}"
+#      delegate_to: "{{ groups['search_head'][0] }}"
+
+
+
+     #{{ cluster.search_head.members.values() | map('regex_replace', '(.*)', 'https://\\1:8089') | join(',') }}  
+     
+     # with_items: "{{ groups['search_head'] }}"
+      #| map('regex_replace', '(.*)', 'https://\\1:8089') | join(',') }}"
+      #when: ansible_hostname == "{{ cluster['captain'] }}"
+#    - set_fact: idxmaster="{{ cluster_master.stdout }}"
+    
+#    - name: test2
+ #     debug: msg="{{ idxmaster }}"
+      #with_items: "{{ groups['indexer'] }}"
+
+#hostvars[groups['deployer']]['ansible_ssh_host']
+
+    # - name: TEST2
+    #   debug: msg="{{ ansible_default_ipv4.address }}"
+    #   delegate_to: "{{ item }}"
+    #   with_items: "{{groups['indexer']}}"
+
+
     # - name: TEST    
     #   command: "/usr/bin/splunk add search-server -host {{ item.value }}:8089  -auth admin:{{ admin_pw }} -remoteUsername admin -remotePassword {{ admin_pw }}"
     #   with_dict: "{{ cluster.search_head.members }}"

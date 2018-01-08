@@ -7,7 +7,7 @@
   file: path=/opt/splunk/etc/master-apps state=directory 
 
 - name: configure as IDX Master
-  shell: splunk edit cluster-config -mode master -secret {{ cluster['secret'] }} -cluster_label {{ cluster['indexer']['label'] }} -auth admin:{{ admin_pw }}
+  shell: splunk edit cluster-config -mode master -secret {{ cluster['secret'] }} -cluster_label {{ cluster['label']['idx'] }} -auth admin:{{ admin_pw }}
 
 - name: install HA Proxy
   yum: name=haproxy state=present
