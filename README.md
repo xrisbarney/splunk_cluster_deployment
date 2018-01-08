@@ -11,7 +11,7 @@
 
 Tested on Centos 7 x64
 
-These playbooks create custom Splunk app called Spaceballs that setup 2 Clusters (SH and Indexer) in addition to creating a Splunk Indexer Master and a Splunk SearchHead Deployer. 
+These playbooks create 2 Clusters (SH and Indexer) in addition to creating a Splunk Indexer Master and a Splunk SearchHead Deployer. 
 
 The end result is this:
 ![chart](Splunk_cluster.png)
