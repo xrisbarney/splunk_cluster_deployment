@@ -1,3 +1,4 @@
+#jinja2: lstrip_blocks: True
 global
     daemon
     maxconn 256
@@ -19,9 +20,9 @@ backend webservers
     option httpchk
     option forwardfor
     option http-server-close
-    server mrxsplunksh01.vagrant.local 10.185.20.156:8000 maxconn 32 check ssl verify none
-    server mrxsplunksh02.vagrant.local 10.10.50.160:8000 maxconn 32 check ssl verify none
-    server mrxsplunksh03.vagrant.local 10.10.50.161:8000 maxconn 32 check ssl verify none
+    {% for sh in groups['search_head'] %}
+    server {{ sh }} {{ hostvars[sh].ansible_ssh_host }}:8000 maxconn 32 check ssl verify none
+    {% endfor %}
 
 listen admin
     bind *:8080
