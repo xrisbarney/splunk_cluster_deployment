@@ -1,11 +1,11 @@
-
 # INSTALLS SPLUNK Indexer Master
 
 # Master
-- hosts: "master"  
+---
+- hosts: "master"
   become_user: root
   become: true
   gather_facts: true
   roles:
-    - base
-    - master
+    - roles/base
+    - roles/master

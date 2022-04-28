@@ -3,9 +3,10 @@
 
 # Base Config
 splunk:
-  version: 7.0.1
-  binary: splunk-7.0.1-2b5b15c4ee89-linux-2.6-x86_64.rpm
-  download_url: "https://www.splunk.com/bin/splunk/DownloadActivityServlet?architecture=x86_64&platform=linux&version=7.0.1&product=splunk&filename=splunk-7.0.1-2b5b15c4ee89-linux-2.6-x86_64.rpm&wget=true"
+  version: 8.2.6
+  rpm_binary: splunk-8.2.6.rpm
+  deb_binary: splunk-8.2.6.deb
+  download_url: "http://192.168.33.1:8000/"
   checksum: md5:89e80e1822be6c02c9f6754215bfa1e8
   web:
     enableSplunkWebSSL: true
@@ -16,10 +17,10 @@ admin_pw: darkhelmet
 
 # Cluster Config
 cluster:
-  secret: SpaceWinnebago  # secret key
-  label: 
-    idx: idx_cluster    # cluster label
+  secret: SpaceWinnebago # secret key
+  label:
+    idx: idx_cluster # cluster label
     shc: sh_cluster
-  replication_factor: 3   # 3 is default
-  search_factor: 2        # 2 is default
+  replication_factor: 3 # 3 is default
+  search_factor: 2 # 2 is default
 

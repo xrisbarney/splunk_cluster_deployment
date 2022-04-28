@@ -4,10 +4,18 @@
     - name: include vars
       include_vars: "config.yaml"
 
+- name: Deploy the cluster master indexer
+  import_playbook: playbooks/01_master_IDX.yaml
 
-# Start the Engines!
-- include: playbooks/01_master_IDX.yaml
-- include: playbooks/02_cluster_IDX.yaml
-- include: playbooks/03_deployer_SHC.yaml
-- include: playbooks/04_cluster_SHC.yaml
-- include: playbooks/05_final.yaml
+- name: Deploy cluster slave indexers
+  import_playbook: playbooks/02_cluster_IDX.yaml
+
+- name: Deploy the search head deployers
+  import_playbook: playbooks/03_deployer_SHC.yaml
+
+- name: Deploy the search head cluster
+  import_playbook: playbooks/04_cluster_SHC.yam
+
+- name: Perform final clean up and config tasks
+  import_playbook: playbooks/05_final.yaml
+
