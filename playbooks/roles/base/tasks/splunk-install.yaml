@@ -25,7 +25,7 @@
     # You can enable the checksum to verify the binary downloaded
     # checksum: "{{ splunk['checksum'] }}"
     mode: 0440
-    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    when: ansible_os_family == 'RedHat'
 
 - name: get splunk binary debian
   get_url:
@@ -34,12 +34,12 @@
     # You can enable the checksum to verify the binary downloaded
     # checksum: "{{ splunk['checksum'] }}"
     mode: 0440
-    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+    when: ansible_os_family == 'Debian'
 
 - name: install splunk RPM
   yum: name="/tmp/{{ splunk['binary'] }}" state=present
-  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+  when: ansible_os_family == 'RedHat'
 
 - name: install splunk debian
   shell: dpkg -i /tmp/{{ splunk['deb_binary'] }}
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: ansible_os_family == 'Debian'
